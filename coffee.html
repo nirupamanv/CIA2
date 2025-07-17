@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<nav class="bg-zinc-900 px-4 sm:px-6 md:px-8 py-4">
+    <div class="flex flex-col sm:flex-row items-center justify-between">
+        <a href="" class="text-white text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold mb-2 sm:mb-0">CofeeHub</a>
+        <div class="flex space-x-2 sm:space-x-4 mt-2 sm:mt-0">
+            <a href="" class="text-white hover:bg-lime-600/20 px-2 sm:px-3 py-1 sm:py-2 rounded text-sm sm:text-base">Home</a>
+        <a href="" class="text-white hover:bg-lime-600/20 px-2 sm:px-3 py-1 sm:py-2 rounded text-sm sm:text-base">coffee cup</a>
+            <a href="" class="text-white hover:bg-lime-600/20 px-2 sm:px-3 py-1 sm:py-2 rounded text-sm sm:text-base">Contacts</a>
+        </div>
+    </div>
+</nav>
+    </nav>
+    <section id="home" class="w-full p-8 bg-center flex items-center justify-center text-center text-white"
+        style="background-image: url('./images.jpg');">
+        <div class="bg-black p-8 rounded shadow-lg max-w-xl">
+     <h1 class="text-4xl md:text-6xl font-bold mb-2">Discover Your Perfect Coffee spot</h1>
+        <p class="text-lg md:text-xl mb-6">Explore  and enjoy your day with us.</p>
+            <a href="" class="bg-lime-600 hover:bg-lime-700 text-white px-6 py-3 rounded">
+                Explore Now
+            </a>
+    </div>
+    </section>
+        <section id="video" class="py-16 bg-gray-100">
+  <h2 class="text-3xl font-bold text-center mb-8">Watch our coffee Hub</h2>
+  <video controls class="w-full max-w-4xl mx-auto rounded-xl shadow-lg">
+    <source src="Set2_Video.mp4" type="video/mp4">
+    <track src="WEBVTT.vtt" kind="subtitles" srclang="en" label="English" default>
+    Your browser does not support the video tag.
+  </video>
+</section>
+<section id="audio" class="py-16 bg-blue-900 text-white flex flex-col items-center">
+  <h2 class="text-3xl font-bold mb-6">Set the Mood</h2>
+  <audio controls class="w-80">
+    <source src="Set2_Audio.mp3" type="audio/mp3" />
+  </audio>
+</section>
+
+<section id="coffee-list" class="py-16 bg-white">
+<div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
+    <input type="text" id="title" placeholder="Search by title..." class="text-black px-4 py-1 rounded w-64 border border-gray-300" />
+    <select id="sortTitle" class="px-3 py-1 rounded">
+        <option value="">Sort by Title</option>
+        <option value="az">A - Z</option>
+        <option value="za">Z - A</option>
+    </select>
+</div>
+<h2 class="text-3xl font-bold text-center mb-8">Our Hot Coffees</h2>
+<div id="coffees" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-8"></div>
+    
+</section>
+
+
+<script>
+    fetch('https://api.sampleapis.com/coffee/hot')
+        .then(res => res.json())
+        .then(data => {
+            const coffees = data.slice(0, 8);
+            const container = document.getElementById('coffees');
+            coffees.forEach(coffee => {
+                const div = document.createElement('div');
+                div.className = 'bg-zinc-100 rounded-lg shadow-lg p-6 flex flex-col items-center';
+                div.innerHTML = `
+                    <img src="${coffee.image}" alt="${coffee.title}" class="w-32 h-32 object-cover rounded mb-4">
+                <h3 class="text-xl font-bold mb-2">${coffee.title}</h3>
+                    <p class="text-gray-700 mb-2 text-center">${coffee.description || 'No description available.'}</p>
+                    <p class="text-sm text-gray-600"><span class="font-semibold">Ingredients:</span> ${coffee.ingredients ? coffee.ingredients.join(', ') : 'N/A'}</p>
+                `;
+                container.appendChild(div);
+            });
+        });
+</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> 
+</head>
+<body>
+<main>
+    <h2>GEOLOCATION DEMO</h2>
+<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=77.56407737731935%2C12.919241206343573%2C77.61926651000978%2C12.947474179333993&amp;layer=mapnik&amp;marker=12.933358092189604%2C77.59167194366455" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=12.93336&amp;mlon=77.59167#map=15/12.93336/77.59167">View Larger Map</a></small>
+
+        <p>Latitude: <span id="lat" ></span></p>
+         <p>Longitude: <span id="lon" ></span></p>
+          <p>TimeStamp: <span id="timestamp" ></span></p>
+          <div id="error"></div>
+    </main>
+
+<script>
+        window.onload = function(){
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(getPositions, showError);
+            }else {
+                console.log("Browser doesn't support Geolocation")                
+            }
+        }
+        function getPositions(position){
+            document.getElementById("lat").innerText= position.coords.latitude;
+            document.getElementById("lon").innerText= position.coords.longitude;
+            document.getElementById("timestamp").innerText=new Date(position.timestamp)
+        }
+        function showError(error){
+            let msg="";
+            switch(error.code){
+                case error.PERMISSION_DENIED:
+                    msg="User Denied Permission";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    msg="Not able to fetch the user position";
+                    break;
+                case error.TIMEOUT:
+                    msg="Time out";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    msg="Unknown Error";
+                    break;
+            }
+            displayError(msg)
+ }
+
+        function displayError(msg){
+            document.getElementById("error").innerText=msg;
+    }
+    </script>
+    <div>
+        <h2 class="text-blue-600">Feedback:</h2>
+        
+        <form>
+            <label>Name:</label>
+            <input type="text" id="name" name="name" required><br>
+            <label>Email</label>
+            <input type="email" id="email" name="email" required><br>
+            <label>Favourite coffee:</label>
+            <select id="coffee" name="coffee">
+                <option value="espresso">Espresso</option>
+                <option value="latte">Latte</option>
+                <option value="cappuccino">Cappuccino</option>
+                <option value="americano">Americano</option>
+            </select><br>
+            <button type="submit" class="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded mt-2">Submit</button>
+        </form>
+    </div>
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+            let name = localStorage.getItem('name');
+   let coffee = localStorage.getItem('coffee');
+            if (name && coffee) {
+                const greet = document.createElement('div');
+                greet.className = "text-green-700 font-bold text-lg mb-4";
+                greet.innerText = `Hello, ${name}! You Love ${coffee}.`;
+                document.body.insertBefore(greet, document.body.firstChild);
+            }
+        });
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+      const coffee = document.getElementById('coffee').value;
+            localStorage.setItem('name', name);
+            localStorage.setItem('coffee', coffee);
+            location.reload();
+        });
+    </script>
+
+    
+    
+</body>
+</html>
